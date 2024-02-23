@@ -2,43 +2,41 @@ import 'package:flutter/material.dart';
 
 class OptionBar extends StatelessWidget {
   final List<IconData> icons;
+  final List<Function()> onTapFunctions;
   final double width;
   final double height;
-  final double borderRadius;
+  final Color backgroundColor;
 
   const OptionBar({
     Key? key,
     required this.icons,
+    required this.onTapFunctions,
     required this.width,
     required this.height,
-    this.borderRadius = 8.0, // Default radius is set to 0.0
+    required this.backgroundColor, // Tambahkan parameter backgroundColor
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      // Gunakan Container sebagai wrapper
       width: width,
       height: height,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: const Radius.circular(0.0),
-          topRight: const Radius.circular(0.0),
-          bottomLeft: Radius.circular(borderRadius),
-          bottomRight:
-              Radius.circular(borderRadius), // No radius at bottom right
-        ),
-      ),
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      color: Colors.white, // Tetapkan warna latar belakang Container
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: icons
-            .map((icon) => Icon(
-                  icon,
-                  size: 30,
-                  color: Colors.black,
-                ))
-            .toList(),
+        children: List.generate(
+          icons.length,
+          (index) {
+            return IconButton(
+              onPressed:
+                  onTapFunctions.length > index ? onTapFunctions[index] : null,
+              icon: Icon(icons.length > index ? icons[index] : Icons.error),
+              iconSize: 36,
+              color: Colors.black,
+            );
+          },
+        ),
       ),
     );
   }

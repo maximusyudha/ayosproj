@@ -1,4 +1,6 @@
 import 'package:ayosproj/screens/cart_screen.dart';
+import 'package:ayosproj/screens/rent_screen.dart';
+import 'package:ayosproj/widgets/spesification_item.dart';
 import 'package:flutter/material.dart';
 import 'package:ayosproj/models/product.dart';
 
@@ -50,7 +52,14 @@ class ProductDetailScreen extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.shopping_cart),
                 onPressed: () {
-                  // Tambahkan aksi untuk membuka keranjang
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CartScreen(
+                        cartItems: [product],
+                      ),
+                    ),
+                  );
                 },
               ),
             ],
@@ -61,93 +70,131 @@ class ProductDetailScreen extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Image.network(
-                  product.imageUrl,
-                  width: double.infinity,
-                  height: 200,
-                  fit: BoxFit.fill,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  product.name,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0,
+                  70.0), // Adjust bottom padding according to button height
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.network(
+                    product.imageUrl,
+                    width: double.infinity,
+                    height: 200,
+                    fit: BoxFit.fill,
                   ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  product.description,
-                  style: const TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 30),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      product.price,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30,
-                        color: Colors.black,
-                      ),
+                  const SizedBox(height: 16),
+                  Text(
+                    product.name,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
                     ),
-                    const SizedBox(height: 30),
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            // Kurangi jumlah barang
-                          },
-                          icon: const Icon(Icons.remove),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    product.description,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: 154,
+                        height: 47,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: const Color.fromARGB(255, 222, 238, 204),
                         ),
-                        const Text(
-                          '1', // Ganti dengan jumlah barang yang sesuai
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
+                        child: Center(
+                          child: Text(
+                            product.price,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
-                        IconButton(
-                          onPressed: () {
-                            // Tambah jumlah barang
-                          },
-                          icon: const Icon(Icons.add),
-                        ),
-                      ],
+                      ),
+                      const SizedBox(height: 30),
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              // Decrease item count
+                            },
+                            icon: const Icon(Icons.remove),
+                          ),
+                          const Text(
+                            '1', // Replace with appropriate item count
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              // Increase item count
+                            },
+                            icon: const Icon(Icons.add),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 30),
+                  const Text(
+                    'Item Description',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
                     ),
-                  ],
-                ),
-                // Tambahkan di sini
-              ],
+                  ),
+                  const ItemSpecification(
+                    title: 'Kodak M35',
+                    specifications: [
+                      'Film format: 135 film (35mm)',
+                      'ISO 200/400',
+                      'Optic Lens: 31mm, F=10, 1 element',
+                      'Focusing: free, 1m',
+                      'Shutter Speed: 11/120s',
+                      'CONDITION LIKE NEW',
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
           Positioned(
             left: 0,
             right: 0,
             bottom: 0,
-            child: Padding(
+            child: Container(
               padding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              color: Colors.white, // Change color as per your design
               child: Row(
                 children: [
                   IconButton(
                     onPressed: () {
-                      // Buka layar obrolan
+                      // Open chat screen
                     },
-                    icon: const Icon(Icons.chat_bubble),
+                    icon: Image.asset(
+                      'assets/images/comment2.png',
+                      width: 31,
+                      height: 24,
+                    ),
                     iconSize: 30,
+                    color: Colors.black,
                   ),
                   const SizedBox(width: 20, height: 56),
                   Expanded(
                     child: SizedBox(
                       height: 58,
-                      child: ElevatedButton.icon(
+                      child: ElevatedButton(
                         onPressed: () {
                           Navigator.push(
                             context,
@@ -165,9 +212,8 @@ class ProductDetailScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        icon: const Icon(Icons.shopping_cart),
-                        label: const Text(
-                          'Keranjang',
+                        child: const Text(
+                          'Cart',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
@@ -177,9 +223,14 @@ class ProductDetailScreen extends StatelessWidget {
                   Expanded(
                     child: SizedBox(
                       height: 58,
-                      child: ElevatedButton.icon(
+                      child: ElevatedButton(
                         onPressed: () {
-                          // Sewa sekarang
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RentScreen(product),
+                            ),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -188,9 +239,8 @@ class ProductDetailScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        icon: const Icon(Icons.book),
-                        label: const Text(
-                          'Sewa Sekarang',
+                        child: const Text(
+                          'Rent Now',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
